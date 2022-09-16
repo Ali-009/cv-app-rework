@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
+
+form{
+    width: 720px;
+}
+
+.education-history-container{
+    margin: 48px;
+    font-family: 'Montserrat';
+    color: hsl(210deg, 12%, 45%);
+}
+
+ul{
+    list-style: none;
+}
+
+.education-history-container h3{
+    font-weight: 300;
+}
+
+.education-history-container li{
+    font-size: 14px;
+    margin-bottom: 12px;
+}
