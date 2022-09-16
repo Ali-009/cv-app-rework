@@ -15,6 +15,7 @@ class Education extends React.Component{
 
     handleAddEduHistory(event){
         event.preventDefault()
+        this.props.updateEduHistory()
     }
 
     render(){

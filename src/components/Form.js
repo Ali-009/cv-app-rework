@@ -17,14 +17,31 @@ class Form extends React.Component{
             studyTitle: '',
             eduStart: '',
             eduEnd: '',
+            eduHistory: []
         }
 
         this.updateForm = this.updateForm.bind(this)
+        this.updateEduHistory = this.updateEduHistory.bind(this)
     }
 
     updateForm(key, value){
         this.setState({
             [key] : value
+        })
+    }
+
+    updateEduHistory(){
+        this.setState((state) => {
+            const {school, studyTitle, eduStart, eduEnd, eduHistory} = state
+            const updatedEduHistory = state.eduHistory.concat({
+                school,
+                studyTitle,
+                eduStart,
+                eduEnd
+            })
+            return {
+                eduHistory: updatedEduHistory
+            }
         })
     }
 
@@ -39,7 +56,8 @@ class Form extends React.Component{
 
                 <Education school={school} studyTitle={studyTitle} 
                 eduStart={eduStart} eduEnd={eduEnd}
-                updateForm={this.updateForm}/>
+                updateForm={this.updateForm}
+                updateEduHistory={this.updateEduHistory}/>
             </form>
         )
     }
