@@ -1,6 +1,7 @@
 
 import React from 'react'
-import PersonalInformation from './PersonalInformation';
+import PersonalInformation from './PersonalInformation'
+import Education from './Education'
 
 import '../styles/form-style.css'
 
@@ -13,6 +14,7 @@ class Form extends React.Component{
         return (
             <form action="#">
                 <PersonalInformation />
+                <Education />
             </form>
         )
     }
