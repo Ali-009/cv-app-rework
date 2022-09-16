@@ -27,6 +27,7 @@ class Education extends React.Component{
                         <label htmlFor="end-date">To</label>
                         <input type="date" id="end-date"/>
                     </div>
+                    <button className="addEduHistory">Add</button>
                 </div>
             </fieldset>
         )
