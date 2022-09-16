@@ -4,6 +4,17 @@ import '../styles/section-style.css'
 class Education extends React.Component{
     constructor(props){
         super(props)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleAddEduHistory = this.handleAddEduHistory.bind(this)
+    }
+
+    handleChange(event){
+        const {name, value} = event.target
+        this.props.updateForm(name, value)
+    }
+
+    handleAddEduHistory(event){
+        event.preventDefault()
     }
 
     render(){
@@ -13,21 +24,30 @@ class Education extends React.Component{
                     <legend>Education</legend>
                     <div className="form-control">
                         <label htmlFor="school">School</label>
-                        <input type="text" id="school"/>
+                        <input type="text" id="school" name="school"
+                        onChange={this.handleChange}
+                        value={this.props.school}/>
                     </div>
                     <div className="form-control">
                         <label htmlFor="study-title">Title of Study</label>
-                        <input type="text" id="study-title"/>
+                        <input type="text" id="study-title" name="studyTitle"
+                        onChange={this.handleChange}
+                        value={this.props.studyTitle}/>
                     </div>
                     <div className="form-control">
-                        <label htmlFor="start-date">From</label>
-                        <input type="date" id="start-date"/>
+                        <label htmlFor="eduStart">From</label>
+                        <input type="date" id="eduStart" name="eduStart"
+                        onChange={this.handleChange}
+                        value={this.props.eduStart}/>
                     </div>
                     <div className="form-control">
-                        <label htmlFor="end-date">To</label>
-                        <input type="date" id="end-date"/>
+                        <label htmlFor="eduEnd">To</label>
+                        <input type="date" id="eduEnd" name="eduEnd"
+                        onChange={this.handleChange}
+                        value={this.props.eduEnd}/>
                     </div>
-                    <button className="addEduHistory">Add</button>
+                    <button className="addEduHistory" 
+                    onClick={this.handleAddEduHistory}>Add</button>
                 </div>
             </fieldset>
         )

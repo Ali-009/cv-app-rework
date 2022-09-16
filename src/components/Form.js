@@ -15,8 +15,8 @@ class Form extends React.Component{
             email: '',
             school: '',
             studyTitle: '',
-            eduStart: new Date(),
-            eduEnd: new Date(),
+            eduStart: '',
+            eduEnd: '',
         }
 
         this.updateForm = this.updateForm.bind(this)
@@ -38,7 +38,8 @@ class Form extends React.Component{
                 updateForm={this.updateForm}/>
 
                 <Education school={school} studyTitle={studyTitle} 
-                eduStart={eduStart} eduEnd={eduEnd}/>
+                eduStart={eduStart} eduEnd={eduEnd}
+                updateForm={this.updateForm}/>
             </form>
         )
     }
