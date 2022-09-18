@@ -14,8 +14,10 @@ class EduHistoryItem extends React.Component{
     }
 
     handleHistoryEdit(event){
+        const {editEduHistoryRequest, eduHistoryElement, eduHistoryElementIndex} 
+        = this.props
         event.preventDefault()
-        this.props.editEduHistoryRequest(this.props.eduHistoryElement)
+        editEduHistoryRequest(eduHistoryElement, eduHistoryElementIndex)
     }
 
     render() {
@@ -46,12 +48,14 @@ class Form extends React.Component{
             studyTitleEdit: '',
             eduStartEdit: '',
             eduEndEdit: '',
+            currentEduEditIndex: 0,
         }
 
         this.updateMainForm = this.updateMainForm.bind(this)
         this.updateEduHistory = this.updateEduHistory.bind(this)
         this.editEduHistoryRequest = this.editEduHistoryRequest.bind(this)
         this.updateEditSection = this.updateEditSection.bind(this)
+        this.editEduHistory = this.editEduHistory.bind(this)
     }
 
     updateMainForm(key, value){
@@ -86,13 +90,40 @@ class Form extends React.Component{
         })
     }
 
-    editEduHistoryRequest(elementData){
+    editEduHistoryRequest(elementData, index){
         this.setState({
             historyEdit: true,
             schoolEdit: elementData.school,
             studyTitleEdit: elementData.studyTitle,
             eduStartEdit: elementData.eduStart,
             eduEndEdit: elementData.eduEnd,
+            currentEduEditIndex: index,
+        })
+    }
+
+    editEduHistory(){
+        this.setState((state) => {
+            //This callback function will use Array.prototype.map
+            //to replace the requested item in the eduHistory array without mutating it
+
+            const {schoolEdit, studyTitleEdit, eduStartEdit, eduEndEdit, eduHistory} = state
+
+            const editedEduHistory = eduHistory.map((eduHistoryElement, index) => {
+                if(this.state.currentEduEditIndex === index){
+                    return {
+                        school: schoolEdit,
+                        studyTitle: studyTitleEdit,
+                        eduStart: eduStartEdit,
+                        eduEnd: eduEndEdit,
+                    }
+                } else {
+                    return eduHistoryElement
+                }
+            })
+
+            return {
+                eduHistory: editedEduHistory
+            }
         })
     }
 
@@ -105,10 +136,11 @@ class Form extends React.Component{
             eduHistoryContianer = <div className="education-history-container">
                 <h3>Education History</h3>
                 <ul>
-                    {eduHistory.map((eduHistoryElement) => {
+                    {eduHistory.map((eduHistoryElement, index) => {
                         return (
                             <EduHistoryItem key={uniqid()} 
                             eduHistoryElement={eduHistoryElement}
+                            eduHistoryElementIndex={index}
                             editEduHistoryRequest={this.editEduHistoryRequest}/>
                         )
                     })}
@@ -124,7 +156,8 @@ class Form extends React.Component{
             eduHistoryEditSection =
             <EducationInput header={'Edit Education History'} 
             functionString={'Edit'}
-            school={schoolEdit} studyTitle={studyTitleEdit} eduStart={eduStartEdit} eduEnd={eduEndEdit} updateForm={this.updateEditSection}/>
+            school={schoolEdit} studyTitle={studyTitleEdit} eduStart={eduStartEdit} eduEnd={eduEndEdit} updateForm={this.updateEditSection}
+            updateEduHistory={this.editEduHistory}/>
         }
 
 
