@@ -1,7 +1,7 @@
 
 import React from 'react'
-import PersonalInformation from './PersonalInformation'
-import Education from './Education'
+import PersonalInformationInput from './PersonalInformation'
+import EducationInput from './Education'
 
 import uniqid from 'uniqid'
 
@@ -15,6 +15,7 @@ class EduHistoryItem extends React.Component{
 
     handleHistoryEdit(event){
         event.preventDefault()
+        this.props.editEduHistoryRequest(this.props.eduHistoryElement)
     }
 
     render() {
@@ -37,11 +38,14 @@ class Form extends React.Component{
             studyTitle: '',
             eduStart: '',
             eduEnd: '',
-            eduHistory: []
+            eduHistory: [],
+            historyEdit: false,
+            currentEdit: {},
         }
 
         this.updateForm = this.updateForm.bind(this)
         this.updateEduHistory = this.updateEduHistory.bind(this)
+        this.editEduHistoryRequest = this.editEduHistoryRequest.bind(this)
     }
 
     updateForm(key, value){
@@ -69,9 +73,16 @@ class Form extends React.Component{
         })
     }
 
+    editEduHistoryRequest(elementData){
+        this.setState({
+            historyEdit: true,
+            currentEdit: elementData,
+        })
+    }
+
     render() {
         const {firstName, lastName, phoneNumber, email} = this.state
-        const {school, studyTitle, eduStart, eduEnd, eduHistory} = this.state
+        const {school, studyTitle, eduStart, eduEnd, eduHistory, historyEdit} = this.state
 
         let eduHistoryContianer = null
         if(eduHistory.length > 0){
@@ -81,25 +92,55 @@ class Form extends React.Component{
                     {eduHistory.map((eduHistoryElement) => {
                         return (
                             <EduHistoryItem key={uniqid()} 
-                            eduHistoryElement={eduHistoryElement}/>
+                            eduHistoryElement={eduHistoryElement}
+                            editEduHistoryRequest={this.editEduHistoryRequest}/>
                         )
                     })}
                 </ul>
             </div>
         }
 
+        function getTwoDigitString(number){
+            if(number < 10){
+                return '0' + +number
+            } else {
+                return +number
+            }
+        }
+
+        function convertToISODate(enGBFormattedDate){
+            const [day, month, year] = enGBFormattedDate.split('/')
+            
+            return +year + '-' + getTwoDigitString(month) + '-' 
+            + getTwoDigitString(day)
+        }
+
+        let eduHistoryEditSection = null;
+        if(historyEdit){
+            const {school, studyTitle, eduStart, eduEnd} = this.state.currentEdit
+
+            eduHistoryEditSection =
+            <EducationInput header={'Edit Education History'} 
+            functionString={'Edit'}
+            school={school} studyTitle={studyTitle} eduStart={convertToISODate(eduStart)} eduEnd={convertToISODate(eduEnd)}/>
+        }
+
+
         return (
             <form action="#">
-                <PersonalInformation firstName={firstName} lastName={lastName}
+                <PersonalInformationInput firstName={firstName} lastName={lastName}
                 phoneNumber={phoneNumber} email={email} 
                 updateForm={this.updateForm}/>
                 
                 {eduHistoryContianer}
-
-                <Education school={school} studyTitle={studyTitle} 
+                {eduHistoryEditSection}
+                
+                <EducationInput header={'Education'}
+                school={school} studyTitle={studyTitle} 
                 eduStart={eduStart} eduEnd={eduEnd}
                 updateForm={this.updateForm}
-                updateEduHistory={this.updateEduHistory}/>
+                updateEduHistory={this.updateEduHistory}
+                functionString={'Add'}/>
             </form>
         )
     }

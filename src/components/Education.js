@@ -1,11 +1,11 @@
 import React from 'react'
 import '../styles/section-style.css'
 
-class Education extends React.Component{
+class EducationInput extends React.Component{
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this)
-        this.handleAddEduHistory = this.handleAddEduHistory.bind(this)
+        this.handleButtonClick = this.handleButtonClick.bind(this)
     }
 
     handleChange(event){
@@ -13,7 +13,7 @@ class Education extends React.Component{
         this.props.updateForm(name, value)
     }
 
-    handleAddEduHistory(event){
+    handleButtonClick(event){
         event.preventDefault()
         this.props.updateEduHistory()
     }
@@ -22,7 +22,7 @@ class Education extends React.Component{
         return (
             <fieldset>
                 <div className="section-container">
-                    <legend>Education</legend>
+                    <legend>{this.props.header}</legend>
                     <div className="form-control">
                         <label htmlFor="school">School</label>
                         <input type="text" id="school" name="school"
@@ -48,11 +48,11 @@ class Education extends React.Component{
                         value={this.props.eduEnd}/>
                     </div>
                     <button className="addEduHistory" 
-                    onClick={this.handleAddEduHistory}>Add</button>
+                    onClick={this.handleButtonClick}>{this.props.functionString}</button>
                 </div>
             </fieldset>
         )
     }
 }
 
-export default Education
+export default EducationInput

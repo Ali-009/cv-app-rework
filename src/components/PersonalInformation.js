@@ -2,7 +2,7 @@ import React from 'react'
 
 import '../styles/section-style.css'
 
-class PersonalInformation extends React.Component{
+class PersonalInformationInput extends React.Component{
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this)
@@ -48,4 +48,4 @@ class PersonalInformation extends React.Component{
     }
 }
 
-export default PersonalInformation
+export default PersonalInformationInput
