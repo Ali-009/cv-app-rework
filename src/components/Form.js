@@ -7,6 +7,23 @@ import uniqid from 'uniqid'
 
 import '../styles/form-style.css'
 
+
+//Functions for date manipulation
+function getTwoDigitString(number){
+    if(number < 10){
+        return '0' + +number
+    } else {
+        return +number
+    }
+}
+
+function convertToISODate(enGBFormattedDate){
+    const [day, month, year] = enGBFormattedDate.split('/')
+    
+    return +year + '-' + getTwoDigitString(month) + '-' 
+    + getTwoDigitString(day)
+}
+
 class EduHistoryItem extends React.Component{
     constructor(props){
         super(props)
@@ -20,8 +37,10 @@ class EduHistoryItem extends React.Component{
 
     render() {
         const {studyTitle, school, eduStart, eduEnd} = this.props.eduHistoryElement
+        const formattedStartDate = new Date(eduStart).toLocaleDateString('en-GB')
+        const formattedEndDate = new Date(eduEnd).toLocaleDateString('en-GB')
         return (
-            <li>Studied {studyTitle} in {school} from {eduStart} to {eduEnd} <button onClick={this.handleHistoryEdit}>edit</button></li>
+            <li>Studied {studyTitle} in {school} from {formattedStartDate} to {formattedEndDate} <button onClick={this.handleHistoryEdit}>edit</button></li>
         )
     }
 }
@@ -40,17 +59,31 @@ class Form extends React.Component{
             eduEnd: '',
             eduHistory: [],
             historyEdit: false,
-            currentEdit: {},
+            schoolEdit: '',
+            studyTitleEdit: '',
+            eduStartEdit: '',
+            eduEndEdit: '',
         }
 
-        this.updateForm = this.updateForm.bind(this)
+        this.updateMainForm = this.updateMainForm.bind(this)
         this.updateEduHistory = this.updateEduHistory.bind(this)
         this.editEduHistoryRequest = this.editEduHistoryRequest.bind(this)
+        this.updateEditSection = this.updateEditSection.bind(this)
     }
 
-    updateForm(key, value){
+    updateMainForm(key, value){
         this.setState({
             [key] : value
+        })
+    }
+
+    //Controlled inputs for edit sections of the form
+    //To the section components, both forms of updating the form are identical and are referenced using this.props.updateForm
+    //The state member variables for editing are named similar to the ones in MainForm and only have 'Edit' at the end of their key
+    //The function below is also reusable for editing experience section
+    updateEditSection(key, value){
+        this.setState({
+            [key + 'Edit']: value,
         })
     }
 
@@ -58,14 +91,11 @@ class Form extends React.Component{
         this.setState((state) => {
             const {school, studyTitle, eduStart, eduEnd, eduHistory} = state
 
-            const formattedStartDate = new Date(eduStart).toLocaleDateString('en-GB')
-            const formattedEndDate = new Date(eduEnd).toLocaleDateString('en-GB')
-
             const updatedEduHistory = eduHistory.concat({
                 school,
                 studyTitle,
-                eduStart: formattedStartDate,
-                eduEnd: formattedEndDate
+                eduStart: eduStart,
+                eduEnd: eduEnd,
             })
             return {
                 eduHistory: updatedEduHistory
@@ -76,7 +106,10 @@ class Form extends React.Component{
     editEduHistoryRequest(elementData){
         this.setState({
             historyEdit: true,
-            currentEdit: elementData,
+            schoolEdit: elementData.school,
+            studyTitleEdit: elementData.studyTitle,
+            eduStartEdit: elementData.eduStart,
+            eduEndEdit: elementData.eduEnd,
         })
     }
 
@@ -100,29 +133,15 @@ class Form extends React.Component{
             </div>
         }
 
-        function getTwoDigitString(number){
-            if(number < 10){
-                return '0' + +number
-            } else {
-                return +number
-            }
-        }
-
-        function convertToISODate(enGBFormattedDate){
-            const [day, month, year] = enGBFormattedDate.split('/')
-            
-            return +year + '-' + getTwoDigitString(month) + '-' 
-            + getTwoDigitString(day)
-        }
-
         let eduHistoryEditSection = null;
         if(historyEdit){
-            const {school, studyTitle, eduStart, eduEnd} = this.state.currentEdit
+            const {schoolEdit, studyTitleEdit, eduStartEdit, eduEndEdit} = 
+            this.state
 
             eduHistoryEditSection =
             <EducationInput header={'Edit Education History'} 
             functionString={'Edit'}
-            school={school} studyTitle={studyTitle} eduStart={convertToISODate(eduStart)} eduEnd={convertToISODate(eduEnd)}/>
+            school={schoolEdit} studyTitle={studyTitleEdit} eduStart={eduStartEdit} eduEnd={eduEndEdit} updateForm={this.updateEditSection}/>
         }
 
 
@@ -130,7 +149,7 @@ class Form extends React.Component{
             <form action="#">
                 <PersonalInformationInput firstName={firstName} lastName={lastName}
                 phoneNumber={phoneNumber} email={email} 
-                updateForm={this.updateForm}/>
+                updateForm={this.updateMainForm}/>
                 
                 {eduHistoryContianer}
                 {eduHistoryEditSection}
@@ -138,7 +157,7 @@ class Form extends React.Component{
                 <EducationInput header={'Education'}
                 school={school} studyTitle={studyTitle} 
                 eduStart={eduStart} eduEnd={eduEnd}
-                updateForm={this.updateForm}
+                updateForm={this.updateMainForm}
                 updateEduHistory={this.updateEduHistory}
                 functionString={'Add'}/>
             </form>
