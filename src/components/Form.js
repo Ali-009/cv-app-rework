@@ -7,23 +7,6 @@ import uniqid from 'uniqid'
 
 import '../styles/form-style.css'
 
-
-//Functions for date manipulation
-function getTwoDigitString(number){
-    if(number < 10){
-        return '0' + +number
-    } else {
-        return +number
-    }
-}
-
-function convertToISODate(enGBFormattedDate){
-    const [day, month, year] = enGBFormattedDate.split('/')
-    
-    return +year + '-' + getTwoDigitString(month) + '-' 
-    + getTwoDigitString(day)
-}
-
 class EduHistoryItem extends React.Component{
     constructor(props){
         super(props)
