@@ -26,13 +26,8 @@ fieldset{
     /*Only the legend element explictly defines its position on the gird.
     The form controls are automatically positioned into implicit grid rows.*/
     grid-column: 1 / 3;
-}
 
-.section-container > legend::after{
-    content: '';
-    width: 100%;
     border-bottom: solid thin black;
-    display: block;
 }
 
 .form-control{
