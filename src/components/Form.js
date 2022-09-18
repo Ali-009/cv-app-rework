@@ -7,6 +7,24 @@ import uniqid from 'uniqid'
 
 import '../styles/form-style.css'
 
+class EduHistoryItem extends React.Component{
+    constructor(props){
+        super(props)
+        this.handleHistoryEdit = this.handleHistoryEdit.bind(this)
+    }
+
+    handleHistoryEdit(event){
+        event.preventDefault()
+    }
+
+    render() {
+        const {studyTitle, school, eduStart, eduEnd} = this.props.eduHistoryElement
+        return (
+            <li>Studied {studyTitle} in {school} from {eduStart} to {eduEnd} <button onClick={this.handleHistoryEdit}>edit</button></li>
+        )
+    }
+}
+
 class Form extends React.Component{
     constructor(props){
         super(props)
@@ -61,9 +79,9 @@ class Form extends React.Component{
                 <h3>Education History</h3>
                 <ul>
                     {eduHistory.map((eduHistoryElement) => {
-                        const {school, studyTitle, eduStart, eduEnd} = eduHistoryElement
                         return (
-                            <li key={uniqid()}>Studied {studyTitle} in {school} from {eduStart} to {eduEnd}</li>
+                            <EduHistoryItem key={uniqid()} 
+                            eduHistoryElement={eduHistoryElement}/>
                         )
                     })}
                 </ul>
