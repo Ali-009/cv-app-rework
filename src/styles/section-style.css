@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 
-fieldset, legend, .addEduHistory{
+fieldset, legend, button{
     appearance: none;
     border: none;
     outline: none;
@@ -59,8 +59,14 @@ fieldset{
 .addEduHistory{
     grid-column: 2 / 3;
     justify-self: end;
-    margin-top: 22px;
+}
 
+.form-control-mainTask > .addMainTask{
+    align-self: flex-end;
+}
+
+button{
+    margin-top: 22px;
     background-color: hsl(210deg, 12%, 50%);
     border-radius: 3px;
     color: white;
@@ -69,7 +75,7 @@ fieldset{
 
 }
 
-.addEduHistory:hover{
+button:hover{
     background-color: hsl(210deg, 12%, 45%);
     cursor: pointer;
 }

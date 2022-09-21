@@ -2,6 +2,7 @@
 import React from 'react'
 import PersonalInformationInput from './PersonalInformation'
 import EducationInput from './Education'
+import WorkExperienceInput from './WorkExperience'
 
 import uniqid from 'uniqid'
 
@@ -49,6 +50,11 @@ class Form extends React.Component{
             eduStartEdit: '',
             eduEndEdit: '',
             currentEduEditIndex: 0,
+            companyName: '',
+            position: '',
+            workStart: '',
+            workEnd: '',
+            mainTask: '',
         }
 
         this.updateMainForm = this.updateMainForm.bind(this)
@@ -81,8 +87,8 @@ class Form extends React.Component{
             const updatedEduHistory = eduHistory.concat({
                 school,
                 studyTitle,
-                eduStart: eduStart,
-                eduEnd: eduEnd,
+                eduStart,
+                eduEnd,
             })
             return {
                 eduHistory: updatedEduHistory
@@ -122,6 +128,7 @@ class Form extends React.Component{
             })
 
             return {
+                historyEdit: false,
                 eduHistory: editedEduHistory
             }
         })
@@ -130,6 +137,7 @@ class Form extends React.Component{
     render() {
         const {firstName, lastName, phoneNumber, email} = this.state
         const {school, studyTitle, eduStart, eduEnd, eduHistory, historyEdit} = this.state
+        const {companyName, position, workStart, workEnd, mainTask} = this.state
 
         let eduHistoryContianer = null
         if(eduHistory.length > 0){
@@ -176,6 +184,9 @@ class Form extends React.Component{
                 updateForm={this.updateMainForm}
                 updateEduHistory={this.updateEduHistory}
                 functionString={'Add'}/>
+
+                <WorkExperienceInput header={'Work Experience'} 
+                companyName={companyName} position={position} workStart={workStart} workEnd={workEnd} mainTask={mainTask}updateForm={this.updateMainForm}/>
             </form>
         )
     }
